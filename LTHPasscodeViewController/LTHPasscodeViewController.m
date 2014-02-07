@@ -484,6 +484,9 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 - (void)prepareNavigationControllerWithController:(UIViewController *)viewController {
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: self];
 	navController.modalPresentationStyle = self.showPresentationStyle;
+	if (self.showNavigationBarTintColor) {
+		navController.navigationBar.barTintColor = self.showNavigationBarTintColor;
+	}
 	[viewController presentViewController: navController animated: YES completion: nil];
 //	[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
