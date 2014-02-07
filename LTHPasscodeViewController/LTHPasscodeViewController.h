@@ -25,6 +25,7 @@
 @property (nonatomic, strong) UIColor* showNavigationBarTintColor;
 
 - (void)showLockScreenWithAnimation:(BOOL)animated;
+- (void)showPasscodeRequestInViewController:(UIViewController *)viewController;
 - (void)showForEnablingPasscodeInViewController:(UIViewController *)viewController;
 - (void)showForChangingPasscodeInViewController:(UIViewController *)viewController;
 - (void)showForTurningOffPasscodeInViewController:(UIViewController *)viewController;
