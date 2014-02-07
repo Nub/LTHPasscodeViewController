@@ -74,6 +74,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	BOOL _isUserChangingPasscode;
 	BOOL _isUserEnablingPasscode;
 	BOOL _beingDisplayedAsLockScreen;
+	BOOL _isPasscodeRequest;
 	NSString *_tempPasscode;
 	BOOL _timerStartInSeconds;
 }
@@ -364,7 +365,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	[self resetUI];
 	[_passcodeTextField resignFirstResponder];
 	[UIView animateWithDuration: kLockAnimationDuration animations: ^{
-		if (_beingDisplayedAsLockScreen) {
+		if (_beingDisplayedAsLockScreen && !_isPasscodeRequest) {
 			if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft) {
 				self.view.center = CGPointMake(self.view.center.x * -1.f, self.view.center.y);
 			}
@@ -399,7 +400,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 //		[[NSNotificationCenter defaultCenter] postNotificationName: @"dismissPasscodeViewController"
 //															object: self
 //														  userInfo: nil];
-		if (_beingDisplayedAsLockScreen) {
+		if (_beingDisplayedAsLockScreen && !_isPasscodeRequest) {
 			[self.view removeFromSuperview];
 			[self removeFromParentViewController];
 		}
@@ -495,6 +496,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 }
 
 - (void)showPasscodeRequestInViewController:(UIViewController *)viewController {
+	_isPasscodeRequest = YES;
 	[self prepareAsLockScreen];
 	[self prepareNavigationControllerWithController: viewController];
 	self.title = NSLocalizedString(@"Enter Passcode", @"");
