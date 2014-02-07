@@ -21,6 +21,7 @@
 @property (nonatomic, strong) UIView *coverView;
 @property (nonatomic, weak) id<LTHPasscodeViewControllerDelegate> delegate;
 @property (assign) BOOL isCurrentlyOnScreen;
+@property (nonatomic) UIModalPresentationStyle showPresentationStyle;
 
 - (void)showLockScreenWithAnimation:(BOOL)animated;
 - (void)showForEnablingPasscodeInViewController:(UIViewController *)viewController;
