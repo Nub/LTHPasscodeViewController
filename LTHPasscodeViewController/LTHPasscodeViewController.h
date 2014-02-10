@@ -21,6 +21,7 @@
 @property (nonatomic, strong) UIView *coverView;
 @property (nonatomic, weak) id<LTHPasscodeViewControllerDelegate> delegate;
 @property (assign) BOOL isCurrentlyOnScreen;
+@property (nonatomic) BOOL locksInBackground;
 @property (nonatomic) UIModalPresentationStyle showPresentationStyle;
 @property (nonatomic, strong) UIColor* showNavigationBarTintColor;
 

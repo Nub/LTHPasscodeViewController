@@ -497,12 +497,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 - (void)showPasscodeRequestInViewController:(UIViewController *)viewController {
 	_isPasscodeRequest = YES;
-	_beingDisplayedAsLockScreen = NO;
-	_isUserTurningPasscodeOff = NO;
-	_isUserChangingPasscode = NO;
-	_isUserConfirmingPasscode = NO;
-	_isUserEnablingPasscode = NO;
-	[self resetUI];
+	[self prepareAsLockScreen];
 	[self prepareNavigationControllerWithController: viewController];
 	self.title = NSLocalizedString(@"Enter Passcode", @"");
 }
@@ -835,6 +830,24 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 - (id)init {
 	self = [super init];
 	if (self) {
+		
+		self.locksInBackground = YES;
+		
+		_coverView = [[UIView alloc] initWithFrame: CGRectZero];
+		_coverView.backgroundColor = kCoverViewBackgroundColor;
+		_coverView.frame = self.view.frame;
+		_coverView.userInteractionEnabled = NO;
+		_coverView.tag = 99;
+		_coverView.hidden = YES;
+		[[UIApplication sharedApplication].keyWindow addSubview: _coverView];
+	}
+	return self;
+}
+
+- (void)setLocksInBackground:(BOOL)locksInBackground {
+	_locksInBackground = locksInBackground;
+	
+	if (_locksInBackground) {
 		[[NSNotificationCenter defaultCenter] addObserver: self
 												 selector: @selector(applicationDidEnterBackground)
 													 name: UIApplicationDidEnterBackgroundNotification
@@ -851,16 +864,20 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 												 selector: @selector(applicationWillEnterForeground)
 													 name: UIApplicationWillEnterForegroundNotification
 												   object: nil];
-		
-		_coverView = [[UIView alloc] initWithFrame: CGRectZero];
-		_coverView.backgroundColor = kCoverViewBackgroundColor;
-		_coverView.frame = self.view.frame;
-		_coverView.userInteractionEnabled = NO;
-		_coverView.tag = 99;
-		_coverView.hidden = YES;
-		[[UIApplication sharedApplication].keyWindow addSubview: _coverView];
+	} else {
+		[[NSNotificationCenter defaultCenter] removeObserver:self
+														name:UIApplicationDidEnterBackgroundNotification
+													  object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver: self
+													 name: UIApplicationWillResignActiveNotification
+												   object: nil];
+		[[NSNotificationCenter defaultCenter] removeObserver: self
+													 name: UIApplicationDidBecomeActiveNotification
+												   object: nil];
+		[[NSNotificationCenter defaultCenter] removeObserver: self
+													 name: UIApplicationWillEnterForegroundNotification
+												   object: nil];
 	}
-	return self;
 }
 
 
