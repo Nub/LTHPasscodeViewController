@@ -497,7 +497,12 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 - (void)showPasscodeRequestInViewController:(UIViewController *)viewController {
 	_isPasscodeRequest = YES;
-	[self prepareAsLockScreen];
+	_beingDisplayedAsLockScreen = NO;
+	_isUserTurningPasscodeOff = NO;
+	_isUserChangingPasscode = NO;
+	_isUserConfirmingPasscode = NO;
+	_isUserEnablingPasscode = NO;
+	[self resetUI];
 	[self prepareNavigationControllerWithController: viewController];
 	self.title = NSLocalizedString(@"Enter Passcode", @"");
 }
